@@ -1,0 +1,8 @@
+Starting project at C:\Users\ÐŸÐš\PostBridgeMobile
+Starting Metro Bundler
+Tunnel connected.
+Tunnel ready.
+Waiting on http://localhost:8081
+Logs for your project will appear below.
+
+C:\Users\Š\PostBridgeMobile>
