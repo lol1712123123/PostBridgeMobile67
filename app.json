@@ -9,7 +9,7 @@
     "userInterfaceStyle": "light",
     "extra": {
       "googleClientId": "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
-      "tiktokClientKey": "YOUR_TIKTOK_CLIENT_KEY",
+      "tiktokClientKey": "sbaw4z6oii3cgbz6nf",
       "instagramClientId": "YOUR_INSTAGRAM_CLIENT_ID",
       "telegramBotUsername": "YOUR_TELEGRAM_BOT_USERNAME"
     },
@@ -28,7 +28,7 @@
       "favicon": "./assets/favicon.png"
     },
     "experiments": {
-      "baseUrl": "/Terms-of-Service-URL1"
+      "baseUrl": "/PostBridgeMobile67"
     },
     "plugins": [
       "expo-web-browser"
