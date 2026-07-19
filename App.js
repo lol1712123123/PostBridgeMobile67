@@ -80,7 +80,7 @@ const availablePlatforms = [
   { name: 'Twitch', color: '#9146FF' },
 ];
 
-const tabs = ['Главная', 'Создать', 'Календарь', 'Аккаунты', 'Аналитика'];
+const tabs = ['Главная', 'Календарь', 'Аккаунты', 'Аналитика'];
 
 function isConfiguredValue(value, placeholder) {
   return Boolean(value && value !== placeholder);
@@ -650,120 +650,6 @@ export default function App() {
     );
   }
 
-  function renderCreate() {
-    return (
-      <>
-        <Text style={styles.pageTitle}>Создать пост</Text>
-        <Text style={styles.screenSubtitle}>Подготовьте контент и сгенерируйте AI-подписи.</Text>
-
-        <View style={styles.formCard}>
-          <Text style={styles.inputLabel}>О чём этот пост?</Text>
-          <TextInput
-            value={topic}
-            onChangeText={setTopic}
-            placeholder="Напишите тему"
-            placeholderTextColor="#66779D"
-            style={styles.textInput}
-            multiline
-          />
-
-          <View style={styles.heroActionsRow}>
-            <TouchableOpacity style={styles.primaryButton} onPress={generateCaption}>
-              <Text style={styles.primaryButtonText}>Сгенерировать</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.secondaryButtonDark}
-              onPress={() => {
-                setQueue((current) => [
-                  {
-                    id: String(Date.now()),
-                    title: topic,
-                    platform: 'Рабочая область черновиков',
-                    time: 'Сохранено только что',
-                    status: 'Черновик',
-                    video: selectedVideo ? { uri: selectedVideo.uri, name: videoSource } : null,
-                  },
-                  ...current,
-                ]);
-                setSelectedVideo(null);
-                setActiveTab('Главная');
-                setStatusMessage('Черновик сохранён в очередь публикаций.');
-              }}
-            >
-              <Text style={styles.secondaryButtonDarkText}>Сохранить черновик</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.formCard}>
-          <Text style={styles.inputLabel}>Сгенерированная подпись</Text>
-          <Text style={styles.generatedText}>
-            {generatedCaption || 'Нажмите «Сгенерировать», чтобы создать AI-подпись.'}
-          </Text>
-        </View>
-
-        <View style={styles.formCard}>
-          <Text style={styles.inputLabel}>Загрузить видео</Text>
-          <Text style={styles.screenHint}>
-            Выберите видео из галереи устройства для прикрепления к посту.
-          </Text>
-
-          <View style={styles.heroActionsRow}>
-            <TouchableOpacity style={styles.primaryButton} onPress={pickVideo}>
-              <Text style={styles.primaryButtonText}>Выбрать видео</Text>
-            </TouchableOpacity>
-            {selectedVideo && (
-              <TouchableOpacity style={styles.secondaryButtonDark} onPress={removeSelectedVideo}>
-                <Text style={styles.secondaryButtonDarkText}>Удалить</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-
-          {selectedVideo && (
-            <View style={styles.videoPreviewContainer}>
-              <Video
-                source={{ uri: selectedVideo.uri }}
-                style={styles.videoPreview}
-                useNativeControls
-                resizeMode={Video.RESIZE_MODE_CONTAIN}
-                shouldPlay={false}
-              />
-              <Text style={styles.videoFileName}>{videoSource}</Text>
-            </View>
-          )}
-        </View>
-
-        <View style={styles.formCard}>
-          <Text style={styles.inputLabel}>Сгенерировать видео</Text>
-          <Text style={styles.screenHint}>
-            Добавьте сценарий ролика и при необходимости загрузите видео из галереи как источник.
-          </Text>
-
-          <Text style={[styles.inputLabel, { marginTop: 16 }]}>Сценарий / идея ролика</Text>
-          <TextInput
-            value={videoPrompt}
-            onChangeText={setVideoPrompt}
-            placeholder="Опишите видео"
-            placeholderTextColor="#66779D"
-            style={styles.textInput}
-            multiline
-          />
-
-          <View style={styles.heroActionsRow}>
-            <TouchableOpacity style={styles.primaryButton} onPress={generateVideo}>
-              <Text style={styles.primaryButtonText}>Запустить видео</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.videoStatusBox}>
-            <Text style={styles.videoStatusLabel}>Статус видео</Text>
-            <Text style={styles.generatedText}>{videoStatus}</Text>
-          </View>
-        </View>
-      </>
-    );
-  }
-
   function renderCalendar() {
     return (
       <>
@@ -1099,8 +985,6 @@ export default function App() {
     if (showTerms) return renderTerms();
 
     switch (activeTab) {
-      case 'Создать':
-        return renderCreate();
       case 'Календарь':
         return renderCalendar();
       case 'Аккаунты':
