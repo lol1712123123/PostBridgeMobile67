@@ -838,6 +838,49 @@ export default function App() {
           <Text style={styles.termsLinkArrow}>›</Text>
         </TouchableOpacity>
 
+        <Text style={styles.sectionTitle}>Все платформы</Text>
+        <View style={styles.platformGrid}>
+          {availablePlatforms.map((platform) => {
+            const alreadyAdded = channels.some((ch) => ch.name === platform.name);
+            return (
+              <TouchableOpacity
+                key={platform.name}
+                style={[
+                  styles.oauthCard,
+                  alreadyAdded && styles.oauthCardConnected,
+                ]}
+                onPress={() => {
+                  if (!alreadyAdded) {
+                    quickConnectAccount(platform.name, `@${platform.name.toLowerCase()}`);
+                  }
+                }}
+                disabled={alreadyAdded || connectingPlatform !== null}
+              >
+                <View style={styles.oauthCardLeft}>
+                  <View style={[styles.oauthIcon, { backgroundColor: platform.color }]}>
+                    <Text style={styles.oauthIconText}>{platform.name.slice(0, 1)}</Text>
+                  </View>
+                  <View>
+                    <Text style={styles.oauthName}>{platform.name}</Text>
+                    <Text style={styles.oauthDesc}>
+                      {alreadyAdded ? 'Подключено' : 'Нажмите чтобы подключить'}
+                    </Text>
+                  </View>
+                </View>
+                {alreadyAdded ? (
+                  <View style={styles.oauthConnectedBadge}>
+                    <Text style={styles.oauthConnectedText}>✓</Text>
+                  </View>
+                ) : (
+                  <View style={styles.oauthConnectBadge}>
+                    <Text style={styles.oauthConnectText}>Подключить</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
         <View style={styles.channelsCard}>
           {channels.map((channel) => (
             <View key={channel.id} style={styles.channelRow}>
