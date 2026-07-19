@@ -88,9 +88,6 @@ export default function App() {
   const [generatedCaption, setGeneratedCaption] = useState('');
   const [statusMessage, setStatusMessage] = useState('Главная панель готова.');
   const [channels, setChannels] = useState(defaultChannels);
-  const [showAddAccount, setShowAddAccount] = useState(false);
-  const [selectedPlatform, setSelectedPlatform] = useState(null);
-  const [newHandle, setNewHandle] = useState('');
   const [videoPrompt, setVideoPrompt] = useState('Короткий промо-ролик для нового поста');
   const [videoSource, setVideoSource] = useState('');
   const [videoStatus, setVideoStatus] = useState('Видео ещё не запускалось.');
@@ -410,25 +407,6 @@ export default function App() {
     }
     setActiveTab('Создать');
     setStatusMessage(`Открыт материал "${item.title}" на экране создания.`);
-  }
-
-  function addAccount() {
-    if (!selectedPlatform || !newHandle.trim()) return;
-    const platform = availablePlatforms.find((p) => p.name === selectedPlatform);
-    setChannels((prev) => [
-      ...prev,
-      {
-        id: String(Date.now()),
-        name: platform.name,
-        handle: newHandle.trim(),
-        color: platform.color,
-        status: 'Подключено',
-      },
-    ]);
-    setSelectedPlatform(null);
-    setNewHandle('');
-    setShowAddAccount(false);
-    setStatusMessage(`${platform.name} успешно добавлен.`);
   }
 
   function quickConnectAccount(platformName, defaultHandle) {
@@ -837,75 +815,10 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity style={styles.addAccountButton} onPress={() => setShowAddAccount(true)}>
-          <Text style={styles.addAccountButtonText}>+ Добавить аккаунт вручную</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity style={styles.termsLink} onPress={() => setShowTerms(true)}>
           <Text style={styles.termsLinkText}>Условия использования</Text>
           <Text style={styles.termsLinkArrow}>›</Text>
         </TouchableOpacity>
-
-        {showAddAccount && (
-          <View style={styles.formCard}>
-            <Text style={styles.inputLabel}>Выберите платформу</Text>
-            <View style={styles.platformGrid}>
-              {availablePlatforms.map((platform) => {
-                const alreadyAdded = channels.some((ch) => ch.name === platform.name);
-                return (
-                  <TouchableOpacity
-                    key={platform.name}
-                    style={[
-                      styles.platformOption,
-                      selectedPlatform === platform.name && styles.platformOptionActive,
-                      alreadyAdded && styles.platformOptionDisabled,
-                    ]}
-                    onPress={() => {
-                      if (!alreadyAdded) setSelectedPlatform(platform.name);
-                    }}
-                    disabled={alreadyAdded}
-                  >
-                    <View style={[styles.channelIcon, { backgroundColor: platform.color, width: 32, height: 32, borderRadius: 10 }]}>
-                      <Text style={[styles.channelIconText, { fontSize: 12 }]}>{platform.name.slice(0, 1)}</Text>
-                    </View>
-                    <Text style={[styles.platformOptionText, alreadyAdded && styles.platformOptionTextDisabled]}>
-                      {platform.name}
-                    </Text>
-                    {alreadyAdded && <Text style={styles.alreadyAddedText}>✓</Text>}
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-
-            {selectedPlatform && (
-              <>
-                <Text style={[styles.inputLabel, { marginTop: 16 }]}>Введите аккаунт / хэндл</Text>
-                <TextInput
-                  value={newHandle}
-                  onChangeText={setNewHandle}
-                  placeholder={`@ваш_ник или название`}
-                  placeholderTextColor="#66779D"
-                  style={styles.textInput}
-                />
-                <View style={styles.heroActionsRow}>
-                  <TouchableOpacity style={styles.primaryButton} onPress={addAccount}>
-                    <Text style={styles.primaryButtonText}>Подключить</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.secondaryButtonDark}
-                    onPress={() => {
-                      setSelectedPlatform(null);
-                      setNewHandle('');
-                      setShowAddAccount(false);
-                    }}
-                  >
-                    <Text style={styles.secondaryButtonDarkText}>Отмена</Text>
-                  </TouchableOpacity>
-                </View>
-              </>
-            )}
-          </View>
-        )}
 
         <View style={styles.channelsCard}>
           {channels.map((channel) => (
@@ -1616,18 +1529,6 @@ const styles = StyleSheet.create({
     color: '#D7DEFF',
     fontWeight: '700',
     fontSize: 13,
-  },
-  addAccountButton: {
-    backgroundColor: '#6C63FF',
-    borderRadius: 16,
-    paddingVertical: 14,
-    alignItems: 'center',
-    marginBottom: 18,
-  },
-  addAccountButtonText: {
-    color: '#FFFFFF',
-    fontSize: 15,
-    fontWeight: '800',
   },
   oauthSection: {
     marginBottom: 18,
