@@ -703,142 +703,18 @@ export default function App() {
   }
 
   function renderAccounts() {
-    const isGoogleConnected = channels.some((ch) => ch.name === 'Google');
-    const isTikTokConnected = channels.some((ch) => ch.name === 'TikTok');
-    const isInstagramConnected = channels.some((ch) => ch.name === 'Instagram');
-    const isTelegramConnected = channels.some((ch) => ch.name === 'Telegram');
-
     return (
       <>
         <Text style={styles.pageTitle}>Аккаунты</Text>
         <Text style={styles.screenSubtitle}>Подключённые социальные профили и доступ к публикации.</Text>
 
-        <View style={styles.oauthSection}>
-          <Text style={styles.sectionTitle}>Быстрая привязка</Text>
-
-          <TouchableOpacity
-            style={[styles.oauthCard, isGoogleConnected && styles.oauthCardConnected]}
-            onPress={isGoogleConnected ? null : connectGoogle}
-            disabled={isGoogleConnected || connectingPlatform !== null}
-          >
-            <View style={styles.oauthCardLeft}>
-              <View style={[styles.oauthIcon, { backgroundColor: '#4285F4' }]}>
-                <Text style={styles.oauthIconText}>G</Text>
-              </View>
-              <View>
-                <Text style={styles.oauthName}>Google</Text>
-                <Text style={styles.oauthDesc}>
-                  {isGoogleConnected ? 'Подключено' : 'YouTube, Gmail, Календарь'}
-                </Text>
-              </View>
-            </View>
-            {isGoogleConnected ? (
-              <View style={styles.oauthConnectedBadge}>
-                <Text style={styles.oauthConnectedText}>✓</Text>
-              </View>
-            ) : (
-              <View style={styles.oauthConnectBadge}>
-                <Text style={styles.oauthConnectText}>
-                  {connectingPlatform === 'Google' ? '...' : 'Подключить'}
-                </Text>
-              </View>
-            )}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.oauthCard, isTikTokConnected && styles.oauthCardConnected]}
-            onPress={isTikTokConnected ? null : connectTikTok}
-            disabled={isTikTokConnected || connectingPlatform !== null}
-          >
-            <View style={styles.oauthCardLeft}>
-              <View style={[styles.oauthIcon, { backgroundColor: '#000000' }]}>
-                <Text style={styles.oauthIconText}>T</Text>
-              </View>
-              <View>
-                <Text style={styles.oauthName}>TikTok</Text>
-                <Text style={styles.oauthDesc}>
-                  {isTikTokConnected ? 'Подключено' : 'Публикация видео и аналитика'}
-                </Text>
-              </View>
-            </View>
-            {isTikTokConnected ? (
-              <View style={styles.oauthConnectedBadge}>
-                <Text style={styles.oauthConnectedText}>✓</Text>
-              </View>
-            ) : (
-              <View style={styles.oauthConnectBadge}>
-                <Text style={styles.oauthConnectText}>
-                  {connectingPlatform === 'TikTok' ? '...' : 'Подключить'}
-                </Text>
-              </View>
-            )}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.oauthCard, isInstagramConnected && styles.oauthCardConnected]}
-            onPress={isInstagramConnected ? null : connectInstagram}
-            disabled={isInstagramConnected || connectingPlatform !== null}
-          >
-            <View style={styles.oauthCardLeft}>
-              <View style={[styles.oauthIcon, { backgroundColor: '#E1306C' }]}>
-                <Text style={styles.oauthIconText}>I</Text>
-              </View>
-              <View>
-                <Text style={styles.oauthName}>Instagram</Text>
-                <Text style={styles.oauthDesc}>
-                  {isInstagramConnected ? 'Подключено' : 'Публикация постов и сторис'}
-                </Text>
-              </View>
-            </View>
-            {isInstagramConnected ? (
-              <View style={styles.oauthConnectedBadge}>
-                <Text style={styles.oauthConnectedText}>✓</Text>
-              </View>
-            ) : (
-              <View style={styles.oauthConnectBadge}>
-                <Text style={styles.oauthConnectText}>
-                  {connectingPlatform === 'Instagram' ? '...' : 'Подключить'}
-                </Text>
-              </View>
-            )}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.oauthCard, isTelegramConnected && styles.oauthCardConnected]}
-            onPress={isTelegramConnected ? null : connectTelegram}
-            disabled={isTelegramConnected || connectingPlatform !== null}
-          >
-            <View style={styles.oauthCardLeft}>
-              <View style={[styles.oauthIcon, { backgroundColor: '#26A5E4' }]}>
-                <Text style={styles.oauthIconText}>Tg</Text>
-              </View>
-              <View>
-                <Text style={styles.oauthName}>Telegram</Text>
-                <Text style={styles.oauthDesc}>
-                  {isTelegramConnected ? 'Подключено' : 'Публикация в каналы и группы'}
-                </Text>
-              </View>
-            </View>
-            {isTelegramConnected ? (
-              <View style={styles.oauthConnectedBadge}>
-                <Text style={styles.oauthConnectedText}>✓</Text>
-              </View>
-            ) : (
-              <View style={styles.oauthConnectBadge}>
-                <Text style={styles.oauthConnectText}>
-                  {connectingPlatform === 'Telegram' ? '...' : 'Подключить'}
-                </Text>
-              </View>
-            )}
-          </TouchableOpacity>
-        </View>
+        <Text style={styles.sectionTitle}>Подключить платформу</Text>
 
         <TouchableOpacity style={styles.termsLink} onPress={() => setShowTerms(true)}>
           <Text style={styles.termsLinkText}>Условия использования</Text>
           <Text style={styles.termsLinkArrow}>›</Text>
         </TouchableOpacity>
 
-        <Text style={styles.sectionTitle}>Все платформы</Text>
         <View style={styles.platformGrid}>
           {availablePlatforms.map((platform) => {
             const alreadyAdded = channels.some((ch) => ch.name === platform.name);
