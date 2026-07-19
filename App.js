@@ -75,7 +75,7 @@ const availablePlatforms = [
   { name: 'Twitch', color: '#9146FF' },
 ];
 
-const tabs = ['Главная', 'Календарь', 'Аккаунты', 'Аналитика'];
+const tabs = ['Главная', 'Видео', 'Календарь', 'Аккаунты', 'Аналитика'];
 
 function isConfiguredValue(value, placeholder) {
   return Boolean(value && value !== placeholder);
@@ -947,10 +947,84 @@ export default function App() {
     );
   }
 
+  function renderVideo() {
+    return (
+      <>
+        <Text style={styles.pageTitle}>Загрузить видео</Text>
+        <Text style={styles.screenSubtitle}>Выберите видео из галереи для загрузки.</Text>
+
+        <View style={styles.formCard}>
+          <Text style={styles.inputLabel}>Видеофайл</Text>
+          <Text style={styles.screenHint}>
+            Выберите видео из галереи устройства
+          </Text>
+
+          <View style={styles.heroActionsRow}>
+            <TouchableOpacity style={styles.primaryButton} onPress={pickVideo}>
+              <Text style={styles.primaryButtonText}>Выбрать видео</Text>
+            </TouchableOpacity>
+            {selectedVideo && (
+              <TouchableOpacity style={styles.secondaryButtonDark} onPress={removeSelectedVideo}>
+                <Text style={styles.secondaryButtonDarkText}>Удалить</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          {selectedVideo && (
+            <View style={styles.videoPreviewContainer}>
+              <Video
+                source={{ uri: selectedVideo.uri }}
+                style={styles.videoPreview}
+                useNativeControls
+                resizeMode={Video.RESIZE_MODE_CONTAIN}
+                shouldPlay={false}
+              />
+              <Text style={styles.videoFileName}>{videoSource}</Text>
+            </View>
+          )}
+        </View>
+
+        <View style={styles.formCard}>
+          <Text style={styles.inputLabel}>Описание видео</Text>
+          <TextInput
+            value={videoPrompt}
+            onChangeText={setVideoPrompt}
+            placeholder="Опишите видео"
+            placeholderTextColor="#66779D"
+            style={styles.textInput}
+            multiline
+          />
+        </View>
+
+        <View style={styles.formCard}>
+          <Text style={styles.inputLabel}>Статус</Text>
+          <Text style={styles.generatedText}>{videoStatus}</Text>
+        </View>
+
+        {selectedVideo && (
+          <TouchableOpacity
+            style={styles.primaryButton}
+            onPress={() => {
+              setVideoStatus('Видео загружается...');
+              setTimeout(() => {
+                setVideoStatus('Видео успешно загружено!');
+                setStatusMessage('Видео загружено');
+              }, 2000);
+            }}
+          >
+            <Text style={styles.primaryButtonText}>Загрузить</Text>
+          </TouchableOpacity>
+        )}
+      </>
+    );
+  }
+
   function renderActiveScreen() {
     if (showTerms) return renderTerms();
 
     switch (activeTab) {
+      case 'Видео':
+        return renderVideo();
       case 'Календарь':
         return renderCalendar();
       case 'Аккаунты':
