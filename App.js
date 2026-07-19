@@ -82,6 +82,11 @@ function isConfiguredValue(value, placeholder) {
 }
 
 export default function App() {
+  const tg = typeof window !== 'undefined' && window.Telegram?.WebApp;
+  const theme = tg?.colorScheme === 'dark'
+    ? { bg: '#1c1c1e', card: '#2c2c2e', text: '#fff', muted: '#8e8e93' }
+    : { bg: '#f2f2f7', card: '#fff', text: '#1c1c1e', muted: '#8e8e93' };
+
   const [activeTab, setActiveTab] = useState('Главная');
   const [queue, setQueue] = useState(initialQueue);
   const [topic, setTopic] = useState('Запуск AI-продукта для авторов');
@@ -94,6 +99,19 @@ export default function App() {
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [connectingPlatform, setConnectingPlatform] = useState(null);
   const [showTerms, setShowTerms] = useState(false);
+
+  useEffect(() => {
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      if (showTerms) {
+        tg.BackButton.show();
+        tg.BackButton.onClick(() => { setShowTerms(false); tg.BackButton.hide(); });
+      } else {
+        tg.BackButton.hide();
+      }
+    }
+  }, [showTerms, tg]);
 
   const redirectUri = AuthSession.makeRedirectUri({
     scheme: 'postbridge',
@@ -945,9 +963,9 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar style="light" />
-      <View style={styles.appShell}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.bg }]}>
+      <StatusBar style={tg?.colorScheme === 'dark' ? 'light' : 'dark'} />
+      <View style={[styles.appShell, { backgroundColor: theme.bg }]}>
         <ScrollView style={styles.container} contentContainerStyle={styles.content}>
           {renderActiveScreen()}
         </ScrollView>
