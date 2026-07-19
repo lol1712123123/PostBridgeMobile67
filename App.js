@@ -61,12 +61,7 @@ const initialQueue = [
   },
 ];
 
-const defaultChannels = [
-  { id: '1', name: 'X', handle: '@postbridge', color: '#111827', status: 'Подключено' },
-  { id: '2', name: 'Instagram', handle: '@postbridge.ai', color: '#E1306C', status: 'Подключено' },
-  { id: '3', name: 'LinkedIn', handle: 'PostBridge Inc.', color: '#0A66C2', status: 'Подключено' },
-  { id: '4', name: 'Threads', handle: '@postbridge', color: '#FFFFFF', status: 'Подключено' },
-];
+const defaultChannels = [];
 
 const availablePlatforms = [
   { name: 'TikTok', color: '#000000' },
@@ -510,6 +505,46 @@ export default function App() {
   }
 
   function renderDashboard() {
+    const hasChannels = channels.length > 0;
+
+    if (!hasChannels) {
+      return (
+        <>
+          <View style={styles.topRow}>
+            <View>
+              <Text style={styles.greeting}>Добрый вечер</Text>
+              <Text style={styles.pageTitle}>Главная</Text>
+            </View>
+            <View style={styles.profilePill}>
+              <Text style={styles.profilePillText}>PB</Text>
+            </View>
+          </View>
+
+          <View style={styles.noticeBar}>
+            <Text style={styles.noticeText}>{statusMessage}</Text>
+          </View>
+
+          <View style={styles.heroCard}>
+            <View style={styles.heroHeader}>
+              <View style={styles.liveBadge}>
+                <Text style={styles.liveBadgeText}>ДОБРО ПОЖАЛОВАТЬ</Text>
+              </View>
+            </View>
+            <Text style={styles.heroTitle}>Подключите первый аккаунт</Text>
+            <Text style={styles.heroSubtitle}>
+              Привяжите социальную сеть, чтобы начать управлять контентом, отслеживать аналитику и публиковать посты.
+            </Text>
+
+            <View style={styles.heroActionsRow}>
+              <TouchableOpacity style={styles.primaryButton} onPress={() => setActiveTab('Аккаунты')}>
+                <Text style={styles.primaryButtonText}>Подключить аккаунт</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </>
+      );
+    }
+
     return (
       <>
         <View style={styles.topRow}>
